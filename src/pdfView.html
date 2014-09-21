@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="myLetter">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Take a Note and tag it</title>
+<link rel="stylesheet"
+	href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<!--<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.js"
+	type="text/javascript"></script> -->
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+
+<!-- <script src="js/angular.min.js" type="text/javascript" /> -->
+<head>
+
+</head>
+<body>
+
+<div ng-controller="letterController">
+<div class="container">
+<div class="row">
+	<div class="col-lg-6"><BR />
+		<BR />
+		<h2>Ihr Brief</h2>
+			<BR />
+				<BR />
+	</div>
+</div>
+<div class="row" border="20" class="table table-bordered"">
+	<div class="col-lg-9">
+	<table class="table table-bordered"><tr>
+		<td>
+  			<embed src="http://localhost:8888/outWS1.png" />
+  		</td>
+  		</tr>
+	</table>
+	</div>
+	<div class="col-lg-3">
+	
+		<h2>Zum entfernen des Logos besuchen Sie bitte einen unserer Sponsoren.</h2>
+			<BR/><BR/>
+			<div class="test" ng-controller="letterController">
+	  			<div ng-repeat="sponsor in sponsors">
+	  				
+				<a href="#download" ng-model="sponsor" ng-click="startbrowser(sponsor.id);"">
+  					<img src="{{sponsor.img}}">
+  					<BR/><BR/>
+				</a>
+<!--	   				<button ng-click="startbrowser(sponsor.id);">{{sponsor.name}}</button>-->
+	  			</div>
+			<div>
+			
+<!--			<a href="#" ng-model="sponsor" ng-click="startbrowser(SAP);" ng-controller="letterController">-->
+<!--  				<img src="images/SAP.png">-->
+<!--  				{{sponsor}}-->
+<!--			</a>-->
+<!--			<BR/><BR/>-->
+<!--			<a href="http://www.aldi.de/">-->
+<!--  				<img src="images/aldi.png" alt="HTML tutorial">-->
+<!--			</a>-->
+<!--			<BR/><BR/>-->
+<!--			<a href="http://www.lufthansa.com/">-->
+<!--  				<img src="images/lufthansa.jpg" alt="HTML tutorial">-->
+<!--			</a>-->
+<!--			<BR/><BR/>-->
+<!--			<a href="http://www.beatheuhse.de/">-->
+<!--  				<img src="images/BU.png" alt="HTML tutorial">-->
+<!--			</a>-->
+<!--			-->
+	</div>
+</div>
+
+</div>
+</div>
+
+</body>
+<script type="text/javascript" src="js/letterControler.js"></script>
+</html>

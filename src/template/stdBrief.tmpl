@@ -1,0 +1,96 @@
+%%
+%% This is file `beispiel.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% g-brief.dtx  (with options: `beispiel')
+%% 
+%% =======================================================================
+%% 
+%% Copyright (C) 1991-2003 Michael Lenzen.
+%% 
+%% For additional copyright information see further down in this file.
+%% 
+%% This file is part of the G-BRIEF package.
+%% -----------------------------------------------------------------------
+%% 
+%% It may be distributed under the terms of the LaTeX Project Public
+%% License (LPPL), as described in lppl.txt in the base LaTeX distribution.
+%% Either version 1.1 or, at your option, any later version.
+%% 
+%% The latest version of this license is in
+%% 
+%%          http://www.latex-project.org/lppl.txt
+%% 
+%% LPPL Version 1.1 or later is part of all distributions of LaTeX
+%% version 1999/06/01 or later.
+%% 
+%% 
+%% Error reports in case of UNCHANGED versions to
+%% 
+%%                            <lenzen@lenzen.com>
+%%                            <m.lenzen@t-online.de>
+%% 
+%% 
+\def\filedate{2008/07/15}
+\def\fileversion{4.0.2}
+
+\def\filedate{2008/07/15}
+\def\fileversion{4.0.2}
+\documentclass[11pt]{g-brief} 
+\usepackage[utf8]{inputenc} 
+\usepackage[ngerman]{babel} 
+
+\lochermarke
+\faltmarken
+\fenstermarken
+\trennlinien
+%% \klassisch
+
+\Name                { {{sender.firstName}} {{sender.lastName}} }
+
+
+\Strasse             { {{sender.street}} }
+\Zusatz              {}
+\RetourAdresse       {}
+\Ort                 {D-67346 Speyer}
+\Land                {}
+
+\Telefon             {+49\ 6232\ 623623}
+\EMail               {dl.speyer@web.de}
+
+
+\Unterschrift        { {{sender.firstName}} {{sender.lastName}} }
+
+
+\Adresse             { {{receiver.firstName}} {{receiver.lastName}} \\
+			\\
+                      	{{receiver.street}}	\\
+                      {{receiver.plz}} {{receiver.location}}\\
+                      }
+
+\Betreff             { {{topic}} }
+
+\Datum               {\today}
+\IhrZeichen          {}
+\IhrSchreiben        {}
+
+\Anrede              {Sehr geehrte Damen und Herren,}
+\Gruss               {Mit freundlichen Gr\"u\ss{}en}{1cm}
+
+\Anlagen             {}
+\Verteiler           {}
+
+\begin{document}
+\begin{g-brief}
+
+{{text}}
+
+\end{g-brief}
+\end{document}
+
+
+\endinput
+%%
+%% End of file `beispiel.tex'.
