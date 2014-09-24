@@ -13,6 +13,26 @@ function loadTemplate(template) {
     return fs.readFileSync(template).toString();
 }
 
+function performTexTranformation(outputDirectory, dataObj) {
+	
+	var mkdirSync = function (path) {
+		  try {
+		    fs.mkdirSync(path);
+		  } catch(e) {
+		    if ( e.code != 'EEXIST' ) throw e;
+		  }
+	};
+	
+	
+	mkdirSync("gen");
+	mkdirSync(outputDirectory);
+	var template = loadTemplate("template/stdBriefWS.tmpl");
+	var transformedText=mustache.render(template,dataObj);
+	fs.writeFileSync(outputDirectory+"/out.tex",transformedText); 
+	return outputDirectory + "/out.tex";
+	
+}
+
 function handleRequest(request, response, data) {
 	if (request.method == "GET" ) {
 		//response.writeHead(200, {'Content-Type': 'text/html'});
@@ -23,7 +43,10 @@ function handleRequest(request, response, data) {
 		response.end();
 	}
 	if (request.method == "POST" ) {
-		//console.log("controller manages: "+ data);
+		var shortId = require('shortid');
+		var generationId = shortId.generate();
+		var outputDirectory = "gen/"+generationId;
+		console.log("generationId: "+ generationId);
 		
 		//var test = new Animal(3);
 		//var dataObj = JSON.parse(data);
@@ -34,15 +57,17 @@ function handleRequest(request, response, data) {
 		//console.log("id is " + myObj.id);
 		myValues.setItem(myObj.id, myObj);
 		myValues.commit();
-		var template = loadTemplate("template/stdBriefWS.tmpl");
+		var texFile=performTexTranformation(outputDirectory,myObj);
+		//var template = loadTemplate("template/stdBriefWS.tmpl");
 		//console.log("template: " + template);
-		var transformedText=mustache.render(template,myObj);
-		fs.writeFileSync("outWS.tex",transformedText); 
+		//var transformedText=mustache.render(template,myObj);
+		//fs.writeFileSync("outWS.tex",transformedText); 
 		//console.log("transformed: " + transformedText);
-		response.writeHead(200, {'Content-Type': 'text/html'});
-		fs.createReadStream(__dirname + '/inprogress.html').pipe(response);
-		
-		var ls = process.exec('latex outWS.tex ', function (error, stdout, stderr) {
+		//response.writeHead(200, {'Content-Type': 'text/html'});
+		//fs.createReadStream(__dirname + '/inprogress.html').pipe(response);
+		var dviFile = require('path').dirname(texFile) + require('path').basename(texFile) + "dvi"	
+		console.log("Process: "+"latex "+texFile );
+		var ls = process.exec('latex -output-directory='+outputDirectory+" "+texFile, function (error, stdout, stderr) {
 		   	if (error) {
 			    	console.log(error.stack);
 			     	console.log('Error code: '+error.code);
@@ -51,7 +76,7 @@ function handleRequest(request, response, data) {
 			 else {
 		   		console.log('stdout: ' + stdout);
 		   		console.log('stderr: ' + stderr);
-				ls = process.exec('dvipng outWS.dvi ', function (error, stdout, stderr) {
+				var ls2 = process.exec('dvipng outWS.dvi ', function (error, stdout, stderr) {
 		   			if (error) {
 				    		console.log(error.stack);
 				     		console.log('Error code: '+error.code);
