@@ -29,6 +29,7 @@ function start() {
 							'json':'application/json',
 							'png':'image/png',
 							'jpg':'image/jpg',
+							'pdf':'application/pdf',
 							'wav':'audio/wav'
 						},
 						ext = require('path').extname(file),
