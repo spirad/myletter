@@ -1,0 +1,4 @@
+{{letter.text}}
+{{text}}
+{{id}}
+{{sender.lastname}}
