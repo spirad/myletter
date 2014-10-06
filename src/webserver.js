@@ -1,92 +1,49 @@
-var http = require("http");
-var url = require( "url" );
-var fs = require('fs');
-var util = require('util');
-var queryString = require( "querystring" );
-var express = require('express');
+// server.js
+
+// BASE SETUP
+// =============================================================================
+
+// call the packages we need
+var express    = require('express'); 		// call express
+var app        = express(); 		        // define our app using express
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var crypto = require('crypto');
+var routes = require('./routes/router.js');
+
+//Configuration
+var port = process.env.PORT || 3000; 		// set our port
+
+//routing static files
+app.use('/', express.static('./static'));
+app.use('/images', express.static('./images'));
+app.use('/js', express.static('./js'));
+app.use('/css', express.static('./css'));
 
 
-function start() {
-	function onRequest(request, response) {
-		var pathname = url.parse(request.url).pathname;
-		var file = __dirname + pathname;
-		console.log("URL of request " + request.url);
-		console.log("checking for static file " + file);
-		console.log("Request for " + pathname + " received.");
-		if(request.url=='/') {
-			response.writeHead(200, {'Content-Type': 'text/html'});
-			fs.createReadStream('index.html').pipe(response);
-			return;
-		} 
+//midedleware
+app.use(bodyParser());
+app.use(cookieParser('Dirk'));
+app.use(session());
+
+//logon
+app.get('/login', routes.login)
+app.post('/login', routes.loginUser)
+app.get('/logout', routes.logout)
+app.get('/restricted', routes.restricted)
+
+//permission
+app.use(routes.checkPermission);
+
+//handling teamplate requests
+app.get('/myletter', routes.myletterGet);
+app.post('/myletter', routes.myletterPost);
+
+
+
+
+
+app.listen(port);
+console.log('Server listening on port ' + port);
 	
-		fs.exists(file, function(exists) {
-			if (exists) {
-				fs.stat(file, function (err, stats) {
-					if (stats.isFile()) {
-						var fileExtensions = { 
-							'html':'text/html',
-							'css':'text/css',
-							'js':'text/javascript',
-							'json':'application/json',
-							'png':'image/png',
-							'jpg':'image/jpg',
-							'pdf':'application/pdf',
-							'wav':'audio/wav'
-						},
-						ext = require('path').extname(file),
-						type= 'text/html';
-						for(var i in fileExtensions) {
-							if (ext === i) {
-								type = fileExtensions[i]
-								break
-							}
-						}
-						response.writeHead(200, { 'Content-Type': type })
-						fs.createReadStream(file).pipe(response)
-						console.log('served  '+request.url)
-					}
-					else {
-						console.log( "handling request	");
-						var chunk = '', data = '';
-						request.on('data', function (data) {
-							console.log( "getting new chunk of data");
-							chunk += data;
-						});
-						request.on('end', function () {
-							console.log(chunk + "<-Posted Data Test");
-							console.log("Parsed Data " + queryString.parse(chunk));
-							if (chunk.length> 0) {
-								//var obj = JSON.parse(  );
-								//data = queryString.parse(chunk)
-								data = data + chunk;
-								console.log("my chunked object: %o", data)
-								//console.log("the query object:" + obj['id'])
-								//var urlElements = pathname.split("/");	
-								//console.log("url element:" + urlElements[1])
-								//service/version/ressource
-								//response.end(util.inspect(queryString.parse(chunk)));
-							}
-							var controllerPath =  "."+	 pathname + "/" + "handler.js";
-							console.log("checking " + "."+ pathname + "/" + "handler.js");
-							fs.exists(controllerPath, function(exists) {
-								if (exists) {
-									console.log("instantiating " + "."+  + pathname + "/" + "handler.js");
-									var controller = require("."+ pathname + "/" + "handler.js");
-									controller.handleRequest(request, response, data);
-								}
-								else {
-									response.end();
-								}
-							})
-						})
-					}
-				})
-			}
-		})
-	};
-	http.createServer(onRequest).listen(8888);
-	console.log("Server has started.");
-}
-		
-exports.start = start;
-start();

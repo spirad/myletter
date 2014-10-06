@@ -1,5 +1,0 @@
-{{sender.lastName}}
-{{receiver.firstName}}
-{{letter.text}}
-{{text}}
-{{id}}

@@ -11,7 +11,7 @@ myApp.config( [ '$routeProvider', function($routeProvider) {
 		templateUrl : './intro.html',
 		controller : 'letterController'
 	}).when('/pdfView', {
-		templateUrl : './pdfView.html',
+		templateUrl : './pdfView',
 		controller : 'letterController'
 	}).when('/download', {
 		templateUrl : './download.html',
@@ -94,7 +94,7 @@ myApp.factory('Letter', [
 					angular.extend(this, {
 						id : _id
 					});
-					$http.post('myLetter/letter/', this).success(
+					$http.post('myletter', this).success(
 							function(data, status, headers, config) {
 								retData= data;
 								$location.path("/pdfView")
